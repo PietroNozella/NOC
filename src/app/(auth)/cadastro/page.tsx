@@ -21,7 +21,6 @@ export default function CadastroPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
 
   async function handleCreateOrg(e: React.FormEvent) {
     e.preventDefault();
@@ -34,12 +33,12 @@ export default function CadastroPage() {
     setLoading(true);
     setError(null);
 
+    const supabase = createClient();
     const slug = orgName
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
 
-    // Cria a organizacao via API route
     const { data: org, error: orgError } = await supabase
       .from("organizations")
       .insert({ name: orgName.trim(), slug })
